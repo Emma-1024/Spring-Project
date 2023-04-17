@@ -19,6 +19,16 @@ public class GreetingController {
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
 
+    @GetMapping("/greeting")
+    public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
+        return new Greeting(counter.incrementAndGet(), String.format(template, name));
+    }
+
+
+    @GetMapping("/endDate")
+    public String calculateEndDate(@RequestParam(value = "startDate") String startDate) {
+        return String.format("The final date is %s!", startDate);
+    }
 
 
     private LocalDate getEndDate(String startDate, long weeksInterval) throws ParseException {
@@ -30,22 +40,12 @@ public class GreetingController {
 
     }
 
-    @GetMapping("/greeting")
-    public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
-        return new Greeting(counter.incrementAndGet(), String.format(template, name));
-    }
-//    @GetMapping("/endDate")
-//    public String calculateEndDate(@RequestParam(value = "startDate") String startDate){
-//        return String.format("The final date is %s!", startDate);
-//    }
-
     @GetMapping("/endDate")
     public LocalDate calculateEndDate(@RequestParam("startDate") String startDate,
-                                   @RequestParam("weeksInterval") long weeksInterval) throws ParseException {
+                                      @RequestParam("weeksInterval") long weeksInterval) throws ParseException {
 //        return "The final date is %s!"+ getEndDate(startDate, weeksInterval);
         return getEndDate(startDate, weeksInterval);
 
     }
-
 
 }

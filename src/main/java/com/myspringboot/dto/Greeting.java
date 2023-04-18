@@ -1,4 +1,4 @@
-package com.example.restservice;
+package com.myspringboot.dto;
 
 public class Greeting {
 

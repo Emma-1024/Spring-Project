@@ -1,9 +1,8 @@
 package com.myspringboot.controller;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-import com.myspringboot.dto.Greeting;
+import com.myspringboot.vo.Greeting;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

@@ -1,5 +1,6 @@
 package com.myspringboot.controller;
 
+import com.myspringboot.vo.Result;
 import com.myspringboot.model.User;
 import com.myspringboot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +17,19 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/user")
-    public User createUser(@RequestBody User user) {
-        userService.insert(user);
-        return user;
+    public ResponseEntity<Result<Integer>> createUser(@RequestBody User user) {
+        Integer count = Integer.valueOf(userService.insert(user));
+        Result<Integer> result = new Result<>(count);
+        if(count==0){
+            result.setMessage("Insert failed!").setSuccess(false);
+            return new ResponseEntity<>(result, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(result,HttpStatus.OK);
     }
 
-
     @GetMapping("/user")
-    public User getUser(@RequestParam(value = "id", required = false) Long id, @RequestParam(value = "name", required = false) String name) {
+    public User getUser(@RequestParam(value = "id", required = false) Long id,
+                        @RequestParam(value = "name", required = false) String name) {
         if (id != null) {
             return userService.getUserById(id);
         } else if (name != null) {

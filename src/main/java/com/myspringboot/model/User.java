@@ -11,39 +11,44 @@ public class User {
         return id;
     }
 
-    public void setId(long id) {
+    public User setId(long id) {
         this.id = id;
+        return this;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public User setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public User setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public User setPassword(String password) {
         this.password = password;
+        return this;
     }
 
     public String getPhone_number() {
         return phone_number;
     }
 
-    public void setPhone_number(String phone_number) {
+    public User setPhone_number(String phone_number) {
         this.phone_number = phone_number;
+        return this;
     }
 }

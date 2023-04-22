@@ -1,4 +1,4 @@
-package com.myspringboot.dto;
+package com.myspringboot.vo;
 
 public class Greeting {
 

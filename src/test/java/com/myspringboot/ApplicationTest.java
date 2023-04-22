@@ -1,13 +1,9 @@
-package com.myspringboot.controller;
+package com.myspringboot;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class RestServiceApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
+public class ApplicationTest {
 
 }

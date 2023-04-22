@@ -14,16 +14,27 @@ public class UserService {
     @Autowired
     UserMapper userMapper;
 
-    public List<User> getUsers(String name) {
-        if(name==null) {
-            return userMapper.getAll();
-        }
-        return Arrays.asList(userMapper.getByName(name));
+    public List<User> getUsers() {
+        return userMapper.getAll();
+    }
+
+    public User getUserByName(String name) {
+        return userMapper.getByName(name);
+    }
+
+    public User getUserById(long id) {
+        return userMapper.getById(id);
     }
 
     public int insert(User user) {
         return userMapper.insert(user);
     }
 
-    // TODO ...
+    public int update(long id, String name, String password) {
+        return userMapper.updateById(id, name, password);
+    }
+
+    public int delete(long id) {
+        return userMapper.deleteById(id);
+    }
 }

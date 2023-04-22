@@ -20,14 +20,14 @@ public interface UserMapper {
     @Select("SELECT * FROM users WHERE name = #{name}")
     User getByName(@Param("name") String name);
 
-    @Delete("DELETE FROM users WHERE id = #{id}")
-    int deleteById(@Param("id") long id);
-
     @Insert("INSERT INTO users(name,email,password, phone_number) " +
             " VALUES (#{name}, #{email}, #{password},#{phone_number})")
     int insert(User item);
 
     @Update("Update users set name=#{name}, " +
             " password=#{password} where id=#{id}")
-    int updateById(@Param("id") Long id, @Param("name") String name, @Param("password") String password);
+    int updateById(@Param("id") long id, @Param("name") String name, @Param("password") String password);
+
+    @Delete("DELETE FROM users WHERE id = #{id}")
+    int deleteById(@Param("id") long id);
 }

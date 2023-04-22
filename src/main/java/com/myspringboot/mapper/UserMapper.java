@@ -17,16 +17,16 @@ public interface UserMapper {
     @Select("SELECT * FROM users WHERE id = #{id}")
     User getById(@Param("id") long id);
 
-    @Select("SELECT * FROM users WHERE name = #{name}")
-    User getByName(@Param("name") String name);
+    @Select("SELECT * FROM users WHERE email = #{email}")
+    User getByEmail(@Param("email") String email);
 
-    @Insert("INSERT INTO users(name,email,password, phone_number) " +
-            " VALUES (#{name}, #{email}, #{password},#{phone_number})")
+    @Insert("INSERT INTO users(name, email, password, phone_number) " +
+            " VALUES (#{name}, #{email}, #{password}, #{phoneNumber})")
     int insert(User item);
 
-    @Update("Update users set name=#{name}, " +
-            " password=#{password} where id=#{id}")
-    int updateById(@Param("id") long id, @Param("name") String name, @Param("password") String password);
+    @Update("Update users set name=#{name}, email=#{email}, phone_number=#{phoneNumber}, " +
+            "password=#{password} where id=#{id}")
+    int update(User user);
 
     @Delete("DELETE FROM users WHERE id = #{id}")
     int deleteById(@Param("id") long id);

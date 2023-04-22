@@ -2,10 +2,12 @@ package com.myspringboot.service;
 
 import com.myspringboot.mapper.UserMapper;
 import com.myspringboot.model.User;
+import org.apache.ibatis.annotations.Result;
+import org.apache.ibatis.annotations.ResultMap;
+import org.apache.ibatis.annotations.Results;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -18,8 +20,8 @@ public class UserService {
         return userMapper.getAll();
     }
 
-    public User getUserByName(String name) {
-        return userMapper.getByName(name);
+    public User getUserByEmail(String email) {
+        return userMapper.getByEmail(email);
     }
 
     public User getUserById(long id) {
@@ -30,8 +32,8 @@ public class UserService {
         return userMapper.insert(user);
     }
 
-    public int update(long id, String name, String password) {
-        return userMapper.updateById(id, name, password);
+    public int update(User user) {
+        return userMapper.update(user);
     }
 
     public int delete(long id) {

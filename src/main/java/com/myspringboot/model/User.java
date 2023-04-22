@@ -5,7 +5,7 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private String phone_number;
+    private String phoneNumber;
 
     public long getId() {
         return id;
@@ -43,12 +43,12 @@ public class User {
         return this;
     }
 
-    public String getPhone_number() {
-        return phone_number;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public User setPhone_number(String phone_number) {
-        this.phone_number = phone_number;
+    public User setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
         return this;
     }
 }

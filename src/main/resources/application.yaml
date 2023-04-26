@@ -1,7 +1,6 @@
 server:
   port: 8080
 
-
 logging:
   # Set the log level of the package where the mapper interface is located to DEBUG, so that you can see more detailed SQL execution logs.
   level:

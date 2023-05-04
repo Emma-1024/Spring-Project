@@ -88,7 +88,6 @@ public class UserServiceTest extends ApplicationTest {
     }
 
     private User initializeUser() {
-        userMapper.deleteAll();
         // Insert
         user.setName("test").setPassword("123").setEmail("test@mail.com").setPhoneNumber("123456789");
         User findedUser = userService.getUserByEmail("test@mail.com");
@@ -98,7 +97,8 @@ public class UserServiceTest extends ApplicationTest {
         findedUser = selectUserByEmail("test@mail.com");
         return findedUser;
     }
-    private User selectUserByEmail(String email){
+
+    private User selectUserByEmail(String email) {
         // SelectByEmail
         User findedUser = userService.getUserByEmail(email);
         assertThat(findedUser).isNotNull();

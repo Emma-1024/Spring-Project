@@ -11,12 +11,17 @@ public interface UserMapper {
     // Mapper defined method
     LocalDateTime now();
 
+    @Results(id = "userResultMap", value = {
+            @Result(property = "phoneNumber", column = "phone_number")
+    })
     @Select("SELECT * FROM users")
     List<User> getAll();
 
+    @ResultMap("userResultMap")
     @Select("SELECT * FROM users WHERE id = #{id}")
     User getById(@Param("id") long id);
 
+    @ResultMap("userResultMap")
     @Select("SELECT * FROM users WHERE email = #{email}")
     User getByEmail(@Param("email") String email);
 
@@ -30,4 +35,7 @@ public interface UserMapper {
 
     @Delete("DELETE FROM users WHERE id = #{id}")
     int deleteById(@Param("id") long id);
+
+    @Delete("DELETE FROM users")
+    int deleteAll();
 }

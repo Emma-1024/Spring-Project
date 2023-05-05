@@ -90,11 +90,6 @@
                         <format>
                             <!-- define the files to apply to -->
                             <includes>
-                                <include>src/main/java/**/*.java</include>
-                                <include>src/test/java/**/*.java</include>
-                                <include>src/main/resources/**/*.sql</include>
-                                <include>src/main/resources/**/*.yaml</include>
-                                <include>pom.xml</include>
                                 <include>**/*.md</include>
                                 <include>.gitignore</include>
                             </includes>
@@ -109,22 +104,37 @@
                     </formats>
                     <!-- define a language-specific format -->
                     <java>
-                        <!-- no need to specify files, inferred automatically, but you can if you want -->
-
-                        <!-- apply a specific flavor of google-java-format and reflow long strings -->
                         <palantirJavaFormat>
-                            <version>2.10.0</version>                     <!-- optional -->
+                            <version>2.29.0</version>
                         </palantirJavaFormat>
 
-                        <!-- make sure every file has the following copyright header.
-                          optionally, Spotless can set copyright years by digging
-                          through git history (see "license" section below) -->
                         <licenseHeader>
                             <content>/* (C)$YEAR */
                             </content>  <!-- or <file>${project.basedir}/license-header</file> -->
                         </licenseHeader>
                     </java>
+                    <sql>
+                        <includes>
+                            <include>src/**/*.sql</include>
+                        </includes>
+                        <dbeaver />
+                    </sql>
+                    <yaml>
+                        <includes>
+                            <include>src/**/*.yaml</include>
+                            <include>src/**/*.yml</include>
+                        </includes>
+                        <jackson />
+                    </yaml>
                 </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

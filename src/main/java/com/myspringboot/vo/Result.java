@@ -1,3 +1,7 @@
+/*
+ * Copyright (C)2023, emma Wu
+ * All rights reserved.
+ */
 package com.myspringboot.vo;
 
 public class Result<T> {
@@ -5,8 +9,7 @@ public class Result<T> {
     private String message;
     private T data;
 
-    public Result() {
-    }
+    public Result() {}
 
     public Result(T data) {
         this.data = data;

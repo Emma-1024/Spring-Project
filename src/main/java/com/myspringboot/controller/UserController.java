@@ -1,14 +1,17 @@
+/*
+ * Copyright (C)2023, emma Wu
+ * All rights reserved.
+ */
 package com.myspringboot.controller;
 
-import com.myspringboot.vo.Result;
 import com.myspringboot.model.User;
 import com.myspringboot.service.UserService;
+import com.myspringboot.vo.Result;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class UserController {
@@ -27,7 +30,6 @@ public class UserController {
         result.setData(user);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
 
     @GetMapping("/users")
     public ResponseEntity<Result<List<User>>> getUsers() {
@@ -49,12 +51,15 @@ public class UserController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-
     @PutMapping("/user/{id}")
     public ResponseEntity<Result<Integer>> updateUser(@PathVariable("id") Long id, @RequestBody User user) {
         // TODO IMPROVE UPDATE
         var targetUser = userService.getUserById(id);
-        targetUser.setPhoneNumber(user.getPhoneNumber()).setEmail(user.getEmail()).setName(user.getName()).setPassword(user.getPassword());
+        targetUser
+                .setPhoneNumber(user.getPhoneNumber())
+                .setEmail(user.getEmail())
+                .setName(user.getName())
+                .setPassword(user.getPassword());
         Integer count = userService.update(targetUser);
         Result<Integer> result = new Result<>(count);
         return new ResponseEntity<>(result, HttpStatus.OK);

@@ -1,20 +1,22 @@
+/*
+ * Copyright (C)2023, emma Wu
+ * All rights reserved.
+ */
 package com.myspringboot.service;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.myspringboot.ApplicationTest;
 import com.myspringboot.mapper.UserMapper;
 import com.myspringboot.model.User;
+import java.util.List;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 
 public class UserServiceTest extends ApplicationTest {
 
     private User user;
+
     @Autowired
     UserService userService;
 
@@ -60,7 +62,11 @@ public class UserServiceTest extends ApplicationTest {
     public void testUpdate() {
         User findedUser = initializeUser();
         User originalUser = userService.getUserById(findedUser.getId());
-        user.setName("testUpdate").setPassword("333").setEmail("testUpdate@mail.com").setPhoneNumber("000000000").setId(originalUser.getId());
+        user.setName("testUpdate")
+                .setPassword("333")
+                .setEmail("testUpdate@mail.com")
+                .setPhoneNumber("000000000")
+                .setId(originalUser.getId());
         int count = userService.update(user);
         assertThat(count).isEqualTo(1);
 
@@ -79,7 +85,7 @@ public class UserServiceTest extends ApplicationTest {
     @Test
     public void testDelete() {
         User toBeDeletedUser = initializeUser();
-        //Delete by id
+        // Delete by id
         int count = userService.delete(toBeDeletedUser.getId());
         assertThat(count).isEqualTo(1);
         // Check if the data exists

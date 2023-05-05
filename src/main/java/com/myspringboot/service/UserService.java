@@ -1,14 +1,14 @@
+/*
+ * Copyright (C)2023, emma Wu
+ * All rights reserved.
+ */
 package com.myspringboot.service;
 
 import com.myspringboot.mapper.UserMapper;
 import com.myspringboot.model.User;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.ResultMap;
-import org.apache.ibatis.annotations.Results;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserService {

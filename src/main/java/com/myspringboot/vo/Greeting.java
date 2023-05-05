@@ -1,3 +1,7 @@
+/*
+ * Copyright (C)2023, emma Wu
+ * All rights reserved.
+ */
 package com.myspringboot.vo;
 
 public class Greeting {

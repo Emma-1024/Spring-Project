@@ -109,7 +109,11 @@
                         </palantirJavaFormat>
 
                         <licenseHeader>
-                            <content>/* (C)$YEAR */
+                            <content>
+/*
+ * Copyright (C)$YEAR, emma Wu
+ * All rights reserved.
+ */
                             </content>  <!-- or <file>${project.basedir}/license-header</file> -->
                         </licenseHeader>
                     </java>

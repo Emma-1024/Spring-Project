@@ -70,6 +70,12 @@
             <artifactId>spotless-maven-plugin</artifactId>
             <version>2.36.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+            <version>3.0.6</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -134,7 +140,7 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>check</goal>
+                            <goal>apply</goal>
                         </goals>
                         <phase>compile</phase>
                     </execution>

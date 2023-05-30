@@ -1,8 +1,6 @@
 package com.myspringboot.service;
 
 import com.myspringboot.annotation.Log;
-import com.myspringboot.aspect.LoggingAspect;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service

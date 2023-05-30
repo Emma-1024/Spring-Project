@@ -3,11 +3,12 @@
  * All rights reserved.
  */
 package com.myspringboot.controller;
-
 import com.myspringboot.model.User;
 import com.myspringboot.service.UserService;
 import com.myspringboot.vo.Result;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +19,10 @@ public class UserController {
 
     @Autowired
     UserService userService;
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping("/user")
-    public ResponseEntity<Result<User>> getUser(@RequestParam(value = "email", required = false) String email) {
+    public ResponseEntity<Result<User>> getUser(@RequestParam(value = "email", required = true) String email) {
         Result<User> result = new Result<>();
         if (email == null) {
             result.setMessage("email is null").setSuccess(false);
@@ -36,6 +38,7 @@ public class UserController {
         // TODO PAGINATION
         List<User> userList = userService.getUsers();
         Result<List<User>> result = new Result<>(userList);
+        logger.info("{}", result);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

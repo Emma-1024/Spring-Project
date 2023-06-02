@@ -12,6 +12,7 @@ import org.json.JSONObject;
 
 
 @RestController
+@RequestMapping("/api")
 public class GreetingController {
 
     private static final String template = "Hello, %s!";

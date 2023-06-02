@@ -1,18 +1,20 @@
 ---
 server:
   port: 8080
+  servlet:
+    context-path: /myapp
 logging:
   level:
-    io.springcloud.mybatis.mapper: "debug"
+    io.springcloud.mybatis.mapper: debug
 spring:
   application:
-    name: "spring-boot-project"
+    name: spring-boot-project
   datasource:
-    type: "com.zaxxer.hikari.HikariDataSource"
-    driver-class-name: "com.mysql.cj.jdbc.Driver"
-    url: "jdbc:mysql://${DB_HOST_PORT}/spring_boot_project?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true"
-    username: "${DB_USERNAME}"
-    password: "${DB_PASSWORD}"
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST_PORT}/spring_boot_project?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
 # when use logback, this property below doesn't work
   output:
@@ -20,5 +22,4 @@ spring:
       enabled: ALWAYS
 mybatis:
   mapper-locations:
-  - "classpath:mapper/**/*-mapper.xml"
-
+  - classpath:mapper/**/*-mapper.xml

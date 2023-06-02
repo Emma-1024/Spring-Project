@@ -4,11 +4,19 @@
  */
 package com.myspringboot.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "User Model Information")
 public class User {
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY, description = "User Id", example = "1")
     private long id;
+    @Schema(description = "User's name", example = "name")
     private String name;
+    @Schema(description = "User's email", example = "emai@address.com")
     private String email;
+    @Schema(description = "User's password", example = "password")
     private String password;
+    @Schema(description = "User's phone number", example = "phone number")
     private String phoneNumber;
 
     public long getId() {

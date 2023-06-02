@@ -8,6 +8,7 @@ import ch.qos.logback.classic.LoggerContext;
 import ch.qos.logback.core.util.StatusPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -27,17 +28,21 @@ public class Application {
 
         ApplicationContext context = SpringApplication.run(Application.class, args);
         Environment env = context.getEnvironment();
+        String applicationName = env.getProperty("spring.application.name");
+        String port = env.getProperty("server.port");
+        String hostAddress = InetAddress.getLocalHost().getHostAddress();
+        String contextPath = env.getProperty("server.servlet.context-path");
         logger.info("\n--------------------------------\n\t" +
                         "Application '{}' is running! Access URLs:\n\t" +
-                        "Local: \t\thttp://localhost:{}\n\t" +
-                        "External: \thttp://{}:{}\n\t" +
-                        "Doc: \thttp://{}:{}/doc.html\n" +
+                        "Local: \t\thttp://localhost:{}{}\n\t" +
+                        "External: \thttp://{}:{}{}\n\t" +
+                        "Api Docs: \thttp://localhost:{}{}/v3/api-docs\n\t" +
+                        "Swagger: \thttp://localhost:{}{}/swagger-ui.html\n" +
                         "---------------------------------------",
-                env.getProperty("spring.application.name"),
-                env.getProperty("server.port"),
-                InetAddress.getLocalHost().getHostAddress(),
-                env.getProperty("server.port"),
-                InetAddress.getLocalHost().getHostAddress(),
-                env.getProperty("server.port"));
+                applicationName,
+                port, contextPath,
+                hostAddress, port, contextPath,
+                port, contextPath,
+                port, contextPath);
     }
 }

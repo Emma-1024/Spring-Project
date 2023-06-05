@@ -1,4 +1,7 @@
 package com.myspringboot.aspect;
+
+
+import com.google.gson.Gson;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -13,7 +16,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collections;
 
 @Component
 @Aspect
@@ -22,45 +24,54 @@ public class LoggingAspect {
 
 
     @Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
-    public void restController() {}
+    public void restController() {
+    }
 
     @Pointcut("@annotation(com.myspringboot.annotation.Log)")
-    public void logPointcut(){
+    public void logPointcut() {
         // this method doesn't be called
     }
 
     @Before("logPointcut()")
-    public void logMethodCallBefore(){
+    public void logMethodCallBefore() {
         System.out.println("Be called before");
     }
 
     @Before("restController()")
-    public void logRequest(JoinPoint joinPoint){
+    public void logRequest(JoinPoint joinPoint) {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest httpRequest = attributes.getRequest();
         HttpServletResponse httpResponse = attributes.getResponse();
-        logger.info("Response Status Code: {}", httpResponse.getStatus());
-        logger.info("Request URL: {}", httpRequest.getRequestURL());
-        logger.info("Request method: {}", httpRequest.getMethod());
-        logger.info("Request headers: {}", Collections.list(httpRequest.getHeaderNames()));
-        logger.info("Request payload: {}", getPayload(joinPoint));
+        String args = getArgs(joinPoint);
+        // TODO
+        // Due to privacy concerns, payload info should not be printed. In this case, just for the convenience of development.
+        logger.info(
+                String.format("%s, %d, %s " + (args != "" ? ", args: " : "") + "%s",
+                        httpRequest.getMethod(),
+                        httpResponse.getStatus(),
+                        httpRequest.getRequestURL(),
+                        args));
     }
 
-    private String getPayload(JoinPoint joinPoint){
+    private String getArgs(JoinPoint joinPoint) {
         CodeSignature signature = (CodeSignature) joinPoint.getSignature();
         StringBuilder builder = new StringBuilder();
-        for(int i=0; i<joinPoint.getArgs().length;i++){
+        Object[] args = joinPoint.getArgs();
+        int len = args.length;
+        if (len == 0) return "";
+        Gson gson = new Gson();
+        for (int i = 0; i < len; i++) {
             String parameterName = signature.getParameterNames()[i];
             builder.append(parameterName);
             builder.append(":");
-            builder.append(joinPoint.getArgs()[i].toString());
-            builder.append(",");
+            builder.append(gson.toJson(args[i]).toString());
+            builder.append(i == len - 1 ? "" : ",");
         }
         return builder.toString();
     }
 
     @After("logPointcut()")
-    public void logMethodCallAfter(){
+    public void logMethodCallAfter() {
         System.out.println("Be called after");
     }
 

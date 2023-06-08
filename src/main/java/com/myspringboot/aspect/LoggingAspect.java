@@ -1,7 +1,14 @@
+/*
+ * Copyright (C)2023, emma Wu
+ * All rights reserved.
+ */
 package com.myspringboot.aspect;
 
-
 import com.google.gson.Gson;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -14,14 +21,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 @Component
 @Aspect
 public class LoggingAspect {
     private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
-
 
     @Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
     public void restController() {
@@ -44,13 +47,14 @@ public class LoggingAspect {
         HttpServletResponse httpResponse = attributes.getResponse();
         String args = getArgs(joinPoint);
         // TODO
-        // Due to privacy concerns, payload info should not be printed. In this case, just for the convenience of development.
-        logger.info(
-                String.format("%s, %d, %s " + (args != "" ? ", args: " : "") + "%s",
-                        httpRequest.getMethod(),
-                        httpResponse.getStatus(),
-                        httpRequest.getRequestURL(),
-                        args));
+        // Due to privacy concerns, payload info should not be printed. In this case, just for the convenience of
+        // development.
+        logger.info(String.format(
+                "%s, %d, %s " + (args != "" ? ", args: " : "") + "%s",
+                httpRequest.getMethod(),
+                httpResponse.getStatus(),
+                httpRequest.getRequestURL(),
+                args));
     }
 
     private String getArgs(JoinPoint joinPoint) {
@@ -74,5 +78,4 @@ public class LoggingAspect {
     public void logMethodCallAfter() {
         System.out.println("Be called after");
     }
-
 }

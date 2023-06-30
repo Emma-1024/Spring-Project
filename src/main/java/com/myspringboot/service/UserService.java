@@ -6,7 +6,9 @@ package com.myspringboot.service;
 
 import com.myspringboot.mapper.UserMapper;
 import com.myspringboot.model.User;
+
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,10 @@ public class UserService {
 
     public User getUserById(long id) {
         return userMapper.getById(id);
+    }
+
+    public User getUserName(String name) {
+        return userMapper.getByName(name);
     }
 
     public int insert(User user) {

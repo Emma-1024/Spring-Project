@@ -23,7 +23,7 @@ public class User {
     @Schema(description = "User's phone number", example = "phone number")
     private String phoneNumber;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

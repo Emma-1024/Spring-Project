@@ -25,6 +25,10 @@ public interface UserMapper {
     User getById(@Param("id") long id);
 
     @ResultMap("userResultMap")
+    @Select("SELECT * FROM users WHERE name = #{name}")
+    User getByName(@Param("name") String name);
+
+    @ResultMap("userResultMap")
     @Select("SELECT * FROM users WHERE email = #{email}")
     User getByEmail(@Param("email") String email);
 

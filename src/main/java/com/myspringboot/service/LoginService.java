@@ -1,10 +1,13 @@
+/*
+ * Copyright (C)2023, emma Wu
+ * All rights reserved.
+ */
 package com.myspringboot.service;
 
 import com.myspringboot.model.User;
 import com.myspringboot.vo.Result;
-import org.springframework.http.ResponseEntity;
-
 import java.util.Map;
+import org.springframework.http.ResponseEntity;
 
 public interface LoginService {
 

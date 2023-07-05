@@ -5,9 +5,7 @@
 package com.myspringboot.controller;
 
 import com.myspringboot.vo.Greeting;
-
 import java.util.concurrent.atomic.AtomicLong;
-
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +31,8 @@ public class GreetingController {
 
     @GetMapping("/splitStr")
     public String splitStr() {
-        String input = "This is a string with, some, commas,but not, in, quote s, \"Like this, haha, hi!\", and another, \"Like this, one, too!\"";
+        String input =
+                "This is a string with, some, commas,but not, in, quote s, \"Like this, haha, hi!\", and another, \"Like this, one, too!\"";
         String regex = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
         String[] items = input.split(regex);
         JSONObject jsonObject = new JSONObject();

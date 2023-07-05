@@ -5,10 +5,8 @@
 package com.myspringboot.aspect;
 
 import com.google.gson.Gson;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
@@ -27,8 +25,7 @@ public class LoggingAspect {
     private static final Logger logger = LoggerFactory.getLogger(LoggingAspect.class);
 
     @Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
-    public void restController() {
-    }
+    public void restController() {}
 
     @Pointcut("@annotation(com.myspringboot.annotation.Log)")
     public void logPointcut() {

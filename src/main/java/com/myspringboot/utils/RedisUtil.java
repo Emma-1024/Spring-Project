@@ -1,20 +1,21 @@
+/*
+ * Copyright (C)2023, emma Wu
+ * All rights reserved.
+ */
 package com.myspringboot.utils;
 
 import com.google.gson.Gson;
 import com.myspringboot.vo.LoginUser;
+import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.serializer.RedisSerializer;
-import org.springframework.data.redis.serializer.SerializationException;
 import org.springframework.stereotype.Service;
-
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class RedisUtil {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+
     @Autowired
     Gson gson;
 

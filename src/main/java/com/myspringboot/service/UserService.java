@@ -6,9 +6,7 @@ package com.myspringboot.service;
 
 import com.myspringboot.mapper.UserMapper;
 import com.myspringboot.model.User;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -12,6 +12,7 @@ import com.myspringboot.vo.LoginUser;
 import com.myspringboot.vo.Result;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,43 +37,52 @@ public class LoginServiceImpl implements LoginService {
         Map<String, String> map = new HashMap<>();
 
         // Use authenticate function provided by AuthenticationManager to identify a user
+        // Through calling loadUerByUsername function
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(user.getName(), user.getPassword());
-        Authentication authentication = null;
 
-        // Give hint if certification failed
+        // Give hint if certification is successful or failed
         try {
-            authentication = authenticationManager.authenticate(authenticationToken);
+            // TODO Need to get authorization info and encapsulated into Authentication
+            Authentication authentication = authenticationManager.authenticate(authenticationToken);
+            // Use username to generate a jwt which saved into ResponseResult and be returned, if certification passed
+            LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+            String username = loginUser.getUser().getName();
+            String jwt = JwtUtil.generateToken(username);
+            map.put("token", jwt);
+            result.setMessage("Welcome! You have successfully logged in.")
+                    .setSuccess(true)
+                    .setData(map);
+
+            // Check information from Redis and username is the key
+            LoginUser redisLoginUser = redisUtil.getValue("login:" + username);
+            if (Objects.isNull(redisLoginUser)) {
+                // Considering when I implement a whitelist mechanism to store login token,
+                // Need another key to temporarily save userinfo for authentication in JwtAuthenticationTokenFilter
+                redisUtil.setValue("userInfo:" + username, loginUser);
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } else {
+                throw new RuntimeException("The user is not logged in.");
+            }
         } catch (AuthenticationException e) {
             result.setMessage("Authentication fails").setSuccess(false);
             return new ResponseEntity<>(result, HttpStatus.FORBIDDEN);
         }
-
-        // Use userId to generate a jwt which saved into ResponseResult and be returned, if certification passed
-        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
-        String userId = loginUser.getUser().getId().toString();
-        String jwt = JwtUtil.generateToken(userId);
-        map.put("token", jwt);
-        result.setMessage("Welcome! You have successfully logged in.")
-                .setSuccess(true)
-                .setData(map);
-
-        // TODO Save complete information into Redis and userId is the key
-        redisUtil.setValue("login:" + userId, loginUser);
-        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Result<Long>> logout() {
-        // Get user id from SecurityContextHolder
+    public ResponseEntity<Result<String>> logout() {
+        // Get username from SecurityContextHolder
         UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken)
                 SecurityContextHolder.getContext().getAuthentication();
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
-        long userId = loginUser.getUser().getId();
+        String username = loginUser.getUser().getName();
 
-        // Delete value from Redis
-        redisUtil.deleteKeyFromRedis("login:" + userId);
-        Result<Long> result = new Result<>(userId);
+        // Get user info from Redis
+        redisUtil.setValue("login:" + username, loginUser);
+        redisUtil.deleteKeyFromRedis("userInfo:" + username);
+
+        Result<String> result = new Result<>(username);
         result.setMessage("Logged out").setSuccess(true);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

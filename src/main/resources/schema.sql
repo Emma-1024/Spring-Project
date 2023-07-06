@@ -13,4 +13,6 @@ CREATE
         );
 
 ALTER TABLE
-    users ADD CONSTRAINT u_email UNIQUE(email);
+    users ADD CONSTRAINT u_name UNIQUE(name);
+
+users ADD CONSTRAINT u_email UNIQUE(email);

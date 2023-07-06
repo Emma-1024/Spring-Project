@@ -42,6 +42,8 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/login")
                 .anonymous()
+                .antMatchers("/api/greeting")
+                .anonymous()
                 .anyRequest()
                 .authenticated()
                 .and()

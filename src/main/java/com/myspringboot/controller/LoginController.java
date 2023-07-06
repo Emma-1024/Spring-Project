@@ -24,7 +24,7 @@ public class LoginController {
     }
 
     @GetMapping("/user/logout")
-    public ResponseEntity<Result<Long>> logout() {
+    public ResponseEntity<Result<String>> logout() {
         return loginService.logout();
     }
 }

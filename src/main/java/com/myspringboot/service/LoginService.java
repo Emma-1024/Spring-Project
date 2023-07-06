@@ -13,5 +13,5 @@ public interface LoginService {
 
     ResponseEntity<Result<Map>> login(User user);
 
-    ResponseEntity<Result<Long>> logout();
+    ResponseEntity<Result<String>> logout();
 }

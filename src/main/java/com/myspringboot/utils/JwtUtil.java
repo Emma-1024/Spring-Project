@@ -18,7 +18,7 @@ public class JwtUtil {
 
     private static String SECRET_KEY = "secret";
 
-    public static String extractUserId(String token) {
+    public static String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
 
@@ -31,7 +31,7 @@ public class JwtUtil {
         return claimsResolver.apply(claims);
     }
 
-    public static Claims extractAllClaims(String token) {
+    private static Claims extractAllClaims(String token) {
         return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
     }
 
@@ -56,7 +56,7 @@ public class JwtUtil {
     }
 
     public Boolean validateToken(String token, String string) {
-        final String userId = extractUserId(token);
-        return (userId.equals(string) && !isTokenExpired(token));
+        final String username = extractUsername(token);
+        return (username.equals(string) && !isTokenExpired(token));
     }
 }

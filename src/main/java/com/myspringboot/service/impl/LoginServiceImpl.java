@@ -55,15 +55,14 @@ public class LoginServiceImpl implements LoginService {
                     .setData(map);
 
             // Check information from Redis and username is the key
-            LoginUser redisLoginUser = redisUtil.getValue("login:" + username);
-            if (Objects.isNull(redisLoginUser)) {
-                // Considering when I implement a whitelist mechanism to store login token,
-                // Need another key to temporarily save userinfo for authentication in JwtAuthenticationTokenFilter
-                redisUtil.setValue("userInfo:" + username, loginUser);
-                return new ResponseEntity<>(result, HttpStatus.OK);
-            } else {
-                throw new RuntimeException("The user is not logged in.");
+            LoginUser redisLoginUser = redisUtil.getValue("loggedOut:" + username);
+            if (!Objects.isNull(redisLoginUser)) {
+                redisUtil.deleteKeyFromRedis("loggedOut:" + username);
             }
+            // Considering when I implement a whitelist mechanism to store login token,
+            // Need another key to temporarily save userinfo for authentication in JwtAuthenticationTokenFilter
+            redisUtil.setValue("userInfo:" + username, loginUser);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (AuthenticationException e) {
             result.setMessage("Authentication fails").setSuccess(false);
             return new ResponseEntity<>(result, HttpStatus.FORBIDDEN);
@@ -79,7 +78,7 @@ public class LoginServiceImpl implements LoginService {
         String username = loginUser.getUser().getName();
 
         // Get user info from Redis
-        redisUtil.setValue("login:" + username, loginUser);
+        redisUtil.setValue("loggedOut:" + username, loginUser);
         redisUtil.deleteKeyFromRedis("userInfo:" + username);
 
         Result<String> result = new Result<>(username);

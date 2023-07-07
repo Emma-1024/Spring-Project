@@ -24,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "User", description = "User APIs")
@@ -33,6 +35,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -87,6 +92,7 @@ public class UserController {
     public ResponseEntity<Result<Integer>> createUser(@RequestBody User user) {
         Integer count = 0;
         Result<Integer> result = new Result<>(count);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         try {
             count = userService.insert(user);
             result.setData(count);

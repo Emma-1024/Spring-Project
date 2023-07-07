@@ -51,7 +51,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
 
         // Check userinfo from Redis
-        LoginUser redisLoginUser = redisUtil.getValue("login:" + username);
+        LoginUser redisLoginUser = redisUtil.getValue("loggedOut:" + username);
         if (Objects.isNull(redisLoginUser)) {
             // User is logging in
             redisLoginUser = redisUtil.getValue("userInfo:" + username);

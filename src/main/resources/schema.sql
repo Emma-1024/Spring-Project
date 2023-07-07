@@ -12,7 +12,6 @@ CREATE
             phone_number VARCHAR(20) NOT NULL
         );
 
-ALTER TABLE
-    users ADD CONSTRAINT u_name UNIQUE(name);
-
-users ADD CONSTRAINT u_email UNIQUE(email);
+ALTER TABLE users
+    ADD CONSTRAINT u_name UNIQUE(name);
+    ADD CONSTRAINT u_email UNIQUE(email);

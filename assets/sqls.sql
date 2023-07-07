@@ -92,3 +92,6 @@ SELECT u.name, u.email, c.id AS coupon_id, c.description, c.name AS coupon_name,
 LEFT JOIN user_coupon uc ON u.id=uc.user_id
 LEFT JOIN coupons c ON uc.coupon_id=c.id
 WHERE c.id IS NOT NULL;
+
+-- ALTER TABLE USERS COLUMN
+ALTER TABLE users MODIFY phone_number VARCHAR(20);

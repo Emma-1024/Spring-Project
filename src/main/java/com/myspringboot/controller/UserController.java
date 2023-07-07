@@ -15,7 +15,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +38,13 @@ public class UserController {
 
     @Operation(summary = "Retrieve a user by email", description = "Get a user object by specifying its email.")
     @ApiResponses({
-        @ApiResponse(
-                responseCode = "200",
-                content = {@Content(schema = @Schema(implementation = User.class), mediaType = "application/json")}),
-        @ApiResponse(
-                responseCode = "404",
-                description = "The user with given email was not found.",
-                content = {@Content(schema = @Schema())})
+            @ApiResponse(
+                    responseCode = "200",
+                    content = {@Content(schema = @Schema(implementation = User.class), mediaType = "application/json")}),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "The user with given email was not found.",
+                    content = {@Content(schema = @Schema())})
     })
     @Parameters({@Parameter(name = "email", description = "Search a user by email")})
     @GetMapping("/user")
@@ -62,9 +64,9 @@ public class UserController {
 
     @Operation(summary = "Retrieve all users", description = "Get users list.")
     @ApiResponses({
-        @ApiResponse(
-                responseCode = "200",
-                content = {@Content(schema = @Schema(implementation = User.class), mediaType = "application/json")}),
+            @ApiResponse(
+                    responseCode = "200",
+                    content = {@Content(schema = @Schema(implementation = User.class), mediaType = "application/json")}),
     })
     @GetMapping("/users")
     public ResponseEntity<Result<List<User>>> getUsers() {
@@ -77,11 +79,11 @@ public class UserController {
 
     @Operation(summary = "Insert a user", description = "Insert a user object.")
     @ApiResponses({
-        @ApiResponse(
-                responseCode = "200",
-                content = {@Content(schema = @Schema(implementation = User.class), mediaType = "application/json")}),
+            @ApiResponse(
+                    responseCode = "200",
+                    content = {@Content(schema = @Schema(implementation = User.class), mediaType = "application/json")}),
     })
-    @PostMapping("/user")
+    @PostMapping(value = {"/user", "/signin"})
     public ResponseEntity<Result<Integer>> createUser(@RequestBody User user) {
         Integer count = 0;
         Result<Integer> result = new Result<>(count);
@@ -102,9 +104,9 @@ public class UserController {
 
     @Operation(summary = "Update a user by id", description = "Update a user object by specifying its id.")
     @ApiResponses({
-        @ApiResponse(
-                responseCode = "200",
-                content = {@Content(schema = @Schema(implementation = User.class), mediaType = "application/json")}),
+            @ApiResponse(
+                    responseCode = "200",
+                    content = {@Content(schema = @Schema(implementation = User.class), mediaType = "application/json")}),
     })
     @Parameters({@Parameter(name = "id", description = "Update a user by id")})
     @PutMapping("/user/{id}")
@@ -127,9 +129,9 @@ public class UserController {
 
     @Operation(summary = "Delete a user by id", description = "Delete a user object by specifying its id.")
     @ApiResponses({
-        @ApiResponse(
-                responseCode = "200",
-                content = {@Content(schema = @Schema(implementation = User.class), mediaType = "application/json")}),
+            @ApiResponse(
+                    responseCode = "200",
+                    content = {@Content(schema = @Schema(implementation = User.class), mediaType = "application/json")}),
     })
     @Parameters({@Parameter(name = "id", description = "Delete a user by id")})
     @DeleteMapping("/user/{id}")

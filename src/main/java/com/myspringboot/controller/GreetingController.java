@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,6 +22,7 @@ public class GreetingController {
     private static final Logger logger = LoggerFactory.getLogger(GreetingController.class);
 
     @GetMapping("/greeting")
+    @PreAuthorize("hasAuthority('test')")
     public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
         logger.debug("Hello from Log4j 1");
         logger.warn("Hello from Log4j 2");

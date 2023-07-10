@@ -66,7 +66,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             }
             // get loginUser and put it into UsernamePasswordAuthenticationToken
             UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(redisLoginUser, null, null);
+                    new UsernamePasswordAuthenticationToken(redisLoginUser, null, redisLoginUser.getAuthorities());
             // set SecurityContextHolder
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             // Let it go to next step

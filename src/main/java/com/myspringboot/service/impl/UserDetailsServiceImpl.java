@@ -7,7 +7,12 @@ package com.myspringboot.service.impl;
 import com.myspringboot.mapper.UserMapper;
 import com.myspringboot.model.User;
 import com.myspringboot.vo.LoginUser;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,8 +33,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("The user name or password is incorrect");
         }
         // TODO Query current user's Authorization information
+        List<String> list = new ArrayList<>(Arrays.asList("test", "admin"));
+
 
         // Encapsulate the data into UserDetails and return
-        return new LoginUser(user);
+        return new LoginUser(user, list);
     }
 }

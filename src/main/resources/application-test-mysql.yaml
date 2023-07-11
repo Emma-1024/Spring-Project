@@ -1,0 +1,9 @@
+---
+spring:
+  datasource:
+    datasource:
+      type: "com.zaxxer.hikari.HikariDataSource"
+      driver-class-name: "com.mysql.cj.jdbc.Driver"
+      url: "jdbc:mysql://${DB_HOST_PORT}/spring_boot_project?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowMultiQueries=true"
+      username: "${DB_USERNAME}"
+      password: "${DB_PASSWORD}"

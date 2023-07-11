@@ -95,3 +95,70 @@ WHERE c.id IS NOT NULL;
 
 -- ALTER TABLE USERS COLUMN
 ALTER TABLE users MODIFY phone_number VARCHAR(20);
+
+-- CREATE TABLE sys_menu ABOUT AUTHORITY
+CREATE TABLE sys_menu(
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    menu_name VARCHAR(64) NOT NULL,
+    status CHAR(1) DEFAULT 0,
+    perms VARCHAR(100) DEFAULT NULL,
+    create_by BIGINT DEFAULT NULL,
+    create_time DATETIME DEFAULT NULL,
+    update_by BIGINT DEFAULT NULL,
+    update_time DATETIME DEFAULT NULL,
+    PRIMARY KEY(id)
+)
+
+-- CREATE TABLE sys_role ABOUT AUTHORITY
+CREATE TABLE sys_role(
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    role_name VARCHAR(100) DEFAULT NULL,
+    role_key VARCHAR(100) DEFAULT NULL,
+    status CHAR(1) DEFAULT 0,
+    created_by BIGINT DEFAULT NULL,
+    created_time DATETIME DEFAULT NULL,
+    updated_by BIGINT DEFAULT NULL,
+    updated_time DATETIME DEFAULT NULL,
+    PRIMARY KEY(id)
+)
+
+-- CREATE TABLE sys_role_menu
+CREATE TABLE sys_role_menu(
+    role_id BIGINT NOT NULL AUTO_INCREMENT,
+    menu_id BIGINT NOT NULL DEFAULT 0,
+    PRIMARY KEY(role_id, menu_id)
+)
+
+-- CREATE TABLE sys_user_role
+CREATE TABLE sys_user_role(
+    user_id BIGINT NOT NULL AUTO_INCREMENT,
+    role_id BIGINT NOT NULL DEFAULT 0,
+    PRIMARY KEY(user_id, role_id)
+)
+
+-- TABLE sys_role
+INSERT INTO sys_role(role_name,role_key)
+VALUES('Admin','admin'),
+('User', 'user');
+
+-- TABLE sys_menu
+INSERT INTO sys_menu(menu_name, perms)
+VALUES('Administration', '/users'),
+('Visit','/user');
+
+-- TABLE sys_user_role
+INSERT INTO sys_user_role(user_id, role_id)
+VALUES(2, 1),
+(14, 2);
+
+-- TABLE sys_role_menu
+INSERT INTO sys_role_menu(role_id, menu_id)
+VALUES(1, 1),
+(1, 2);
+
+-- Filter out perms information in sys_menu with user_id 2
+SELECT DISTINCT sm.perms FROM sys_user_role sur
+LEFT JOIN sys_role sr ON sur.role_id = sr.id
+LEFT JOIN sys_role_menu srm ON srm.role_id  = sr.id
+LEFT JOIN sys_menu sm ON sm.id  = srm.menu_id
+WHERE user_id = 2 AND sr.status = 0 AND sm.status = 0;

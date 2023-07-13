@@ -10,9 +10,9 @@ import com.myspringboot.utils.JwtUtil;
 import com.myspringboot.utils.RedisUtil;
 import com.myspringboot.vo.LoginUser;
 import com.myspringboot.vo.Result;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+
+import java.util.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,11 +54,21 @@ public class LoginServiceImpl implements LoginService {
                     .setSuccess(true)
                     .setData(map);
 
-            // Check information from Redis and username is the key
-            LoginUser redisLoginUser = redisUtil.getValue("loggedOut:" + username);
-            if (!Objects.isNull(redisLoginUser)) {
-                redisUtil.deleteKeyFromRedis("loggedOut:" + username);
+            // 产生token之后，看Redis有没有（{emmaWorkingToken: "xxxx"})，
+            // -- 没有的话在Redis中创建一对
+            // -- 有的话check是否有黑名单
+            // -- 没有黑名单，先创建黑名单
+            // -- 有黑名单以及有了黑名单，
+            // -- 直接将之前的token加入黑名单（{blockedTokens:[token1, token2]}),然后将新token更新到{emmaWorkingToken: "xxxx"})
+            String redisWorkingTokenKey = username + "WorkingToken";
+            String workingToken = redisUtil.getValue(redisWorkingTokenKey, String.class);
+            if (Objects.isNull(workingToken)) {
+                redisUtil.setValue(redisWorkingTokenKey, jwt);
+            } else {
+                redisUtil.processBlockedToken(username, workingToken);
+                redisUtil.setValue(redisWorkingTokenKey, jwt);
             }
+
             // Considering when I implement a whitelist mechanism to store login token,
             // Need another key to temporarily save userinfo for authentication in JwtAuthenticationTokenFilter
             redisUtil.setValue("userInfo:" + username, loginUser);
@@ -78,11 +88,16 @@ public class LoginServiceImpl implements LoginService {
         String username = loginUser.getUser().getName();
 
         // Get user info from Redis
-        redisUtil.setValue("loggedOut:" + username, loginUser);
         redisUtil.deleteKeyFromRedis("userInfo:" + username);
 
         Result<String> result = new Result<>(username);
         result.setMessage("Logged out").setSuccess(true);
+
+        // 将当前token加入黑名单防止下次继续登录，并删除keyValue Object
+        String redisWorkingTokenKey = username + "WorkingToken";
+        String workingToken = redisUtil.getValue(redisWorkingTokenKey, String.class);
+        redisUtil.processBlockedToken(username, workingToken);
+        redisUtil.deleteKeyFromRedis(redisWorkingTokenKey);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,6 +74,7 @@ public class UserController {
                     content = {@Content(schema = @Schema(implementation = User.class), mediaType = "application/json")}),
     })
     @GetMapping("/users")
+    @PreAuthorize("hasAuthority('test')")
     public ResponseEntity<Result<List<User>>> getUsers() {
         // TODO PAGINATION
         List<User> userList = userService.getUsers();
@@ -87,7 +89,7 @@ public class UserController {
                     responseCode = "200",
                     content = {@Content(schema = @Schema(implementation = User.class), mediaType = "application/json")}),
     })
-    @PostMapping(value = {"/user", "/signin"})
+    @PostMapping(value = {"/user", "/sign-up"})
     public ResponseEntity<Result<Integer>> createUser(@RequestBody User user) {
         Integer count = 0;
         Result<Integer> result = new Result<>(count);

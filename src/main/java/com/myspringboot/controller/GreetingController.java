@@ -22,7 +22,6 @@ public class GreetingController {
     private static final Logger logger = LoggerFactory.getLogger(GreetingController.class);
 
     @GetMapping("/greeting")
-    @PreAuthorize("hasAuthority('test')")
     public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
         logger.debug("Hello from Log4j 1");
         logger.warn("Hello from Log4j 2");

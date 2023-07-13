@@ -4,6 +4,7 @@
  */
 package com.myspringboot.service.impl;
 
+import com.myspringboot.mapper.MenuMapper;
 import com.myspringboot.mapper.UserMapper;
 import com.myspringboot.model.User;
 import com.myspringboot.vo.LoginUser;
@@ -24,6 +25,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private MenuMapper menuMapper;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         // Query user information
@@ -33,8 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("The user name or password is incorrect");
         }
         // TODO Query current user's Authorization information
-        List<String> list = new ArrayList<>(Arrays.asList("test", "admin"));
-
+        List<String> list = menuMapper.getPermsByUserId(user.getId());
 
         // Encapsulate the data into UserDetails and return
         return new LoginUser(user, list);

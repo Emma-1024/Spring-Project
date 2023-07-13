@@ -47,7 +47,7 @@ public class RedisUtil {
     }
 
     public void processBlockedToken(String username, String workingToken) {
-        String redisBlockedTokensKey = username + "BlockedTokens";
+        String redisBlockedTokensKey = username + "#BlockedTokens";
         List<String> blockedTokenList = getValueByTypeToken(redisBlockedTokensKey, String.class);
         if (Objects.isNull(blockedTokenList)) {
             List<String> tempBlockedTokenList = new ArrayList<>();

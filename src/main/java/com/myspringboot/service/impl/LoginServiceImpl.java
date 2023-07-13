@@ -60,7 +60,7 @@ public class LoginServiceImpl implements LoginService {
             // -- 没有黑名单，先创建黑名单
             // -- 有黑名单以及有了黑名单，
             // -- 直接将之前的token加入黑名单（{blockedTokens:[token1, token2]}),然后将新token更新到{emmaWorkingToken: "xxxx"})
-            String redisWorkingTokenKey = username + "WorkingToken";
+            String redisWorkingTokenKey = username + "#WorkingToken";
             String workingToken = redisUtil.getValue(redisWorkingTokenKey, String.class);
             if (Objects.isNull(workingToken)) {
                 redisUtil.setValue(redisWorkingTokenKey, jwt);
@@ -71,7 +71,7 @@ public class LoginServiceImpl implements LoginService {
 
             // Considering when I implement a whitelist mechanism to store login token,
             // Need another key to temporarily save userinfo for authentication in JwtAuthenticationTokenFilter
-            redisUtil.setValue("userInfo:" + username, loginUser);
+            redisUtil.setValue(username + "#userInfo", loginUser);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (AuthenticationException e) {
             result.setMessage("Authentication fails").setSuccess(false);
@@ -88,13 +88,13 @@ public class LoginServiceImpl implements LoginService {
         String username = loginUser.getUser().getName();
 
         // Get user info from Redis
-        redisUtil.deleteKeyFromRedis("userInfo:" + username);
+        redisUtil.deleteKeyFromRedis(username + "#userInfo");
 
         Result<String> result = new Result<>(username);
         result.setMessage("Logged out").setSuccess(true);
 
         // 将当前token加入黑名单防止下次继续登录，并删除keyValue Object
-        String redisWorkingTokenKey = username + "WorkingToken";
+        String redisWorkingTokenKey = username + "#WorkingToken";
         String workingToken = redisUtil.getValue(redisWorkingTokenKey, String.class);
         redisUtil.processBlockedToken(username, workingToken);
         redisUtil.deleteKeyFromRedis(redisWorkingTokenKey);
